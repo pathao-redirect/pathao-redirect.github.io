@@ -24,7 +24,9 @@ function appInstallRedirect(url) {
         }
         let url_out = new URL(base_url)
         url.searchParams.delete('target');
-        url_out.searchParams.appendAll(url.searchParams)
+        for (let [key, val] of url.searchParams.entries()) {
+            url_out.searchParams.append(key, val);
+        }
         window.location.replace(url_out.toString());
     }, 10);
 }
