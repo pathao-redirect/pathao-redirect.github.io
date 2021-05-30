@@ -15,18 +15,22 @@ if (url.searchParams.has('type')) {
 function appInstallRedirect(url) {
     var base_url = ''
     if (url.searchParams.get('target') == 'ios') {
-        base_url = base_url + iosURI
+        let url_out = new URL(iosURI)
+        url.searchParams.delete('target');
+        for (let [key, val] of url.searchParams.entries()) {
+            url_out.searchParams.append(key, val);
+        }
+        window.location.replace(url_out.toString());
     } else if (url.searchParams.get('target') == 'android') {
-        base_url = base_url + googlePlayURI
+        let url_out = new URL(googlePlayURI)
+        url.searchParams.delete('target');
+        url_out.searchParams.append('referrer', url.searchParams.toString());
+        window.location.replace(url_out.toString());
     } else {
         return null
     }
-    let url_out = new URL(base_url)
-    url.searchParams.delete('target');
-    for (let [key, val] of url.searchParams.entries()) {
-        url_out.searchParams.append(key, val);
-    }
-    window.location.replace(url_out.toString());
+
+
 }
 
 function campaignRedirect(url) {
